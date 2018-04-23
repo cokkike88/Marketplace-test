@@ -22,8 +22,4 @@ app.get('/product', (req, res) => {
 })
 
 
-
-
-
-
 module.exports = app;
