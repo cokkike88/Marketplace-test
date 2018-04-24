@@ -10,7 +10,7 @@ let _jsonValidation = new jv.JSONValidation();
 
 app.get('/product', (req, res) => {
 
-    console.log(configuration.SHIPPING_COST);
+    //console.log(configuration.SHIPPING_COST);
     
     dbConnection.query('SELECT * FROM product', (err, result, fields) => {
         if(err){
@@ -24,7 +24,6 @@ app.get('/product', (req, res) => {
         res.json(result);
     });
 
-    //dbConnection.end();
 })
 
 app.post('/product', (req, res) => {
