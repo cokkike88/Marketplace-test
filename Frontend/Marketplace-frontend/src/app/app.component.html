@@ -1,19 +1,29 @@
 <div class="navigation col-lg-12">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="#">Navbar</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+      <span class="navbar-toggl btn btn-outline-success my-2 my-sm-0er-icon"></span>
     </button>
+    
+    
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-item nav-link active"  [routerLink]="['/home']" [routerLinkActive]="['active']">
+        <a class="nav-item nav-link"  [routerLink]="['/home']" [routerLinkActive]="['active']">
             <span class="glyphicon glyphicon-home"></span> Inicio
         </a>
-        <a class="nav-item nav-link" [routerLink]="['/product']" [routerLinkActive]="['active']">Producto</a>
-        <a class="nav-item nav-link" href="#" [routerLinkActive]="['active']">Pricing</a>
-        <a class="nav-item nav-link disabled" href="#" [routerLinkActive]="['active']">Disabled</a>
-      </div>
+        <a *ngIf="email" class="nav-item nav-link" [routerLink]="['/products']" [routerLinkActive]="['active']">Producto</a>
+        <a *ngIf="email" class="nav-item nav-link" [routerLink]="['/shoopingcart']" [routerLinkActive]="['active']">Carrito</a>
+                
+        <!-- <a class="nav-item nav-link disabled" href="#" [routerLinkActive]="['active']">Disabled</a> -->
+      </div>      
     </div>
+    <form class="form-inline my-2 my-lg-0">
+        <a *ngIf="!email" class="btn btn-outline-success my-2 my-sm-0" [routerLink]="['/login']" [routerLinkActive]="['active']">Login</a>                
+        <span *ngIf="email">
+          <strong class="text-info">{{ email }}</strong>
+          <button class="btn btn-outline-danger my-2 my-sm-0" (click)="onLogout()"  [routerLinkActive]="['active']">Logout</button>
+        </span>
+      </form>
   </nav>
 </div>
 

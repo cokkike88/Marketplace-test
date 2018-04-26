@@ -5,11 +5,11 @@
     <div class="alert alert-success" *ngIf="status == 'success'">
         Se guardo el producto exitosamente.
     </div>
-    <div class="alert alert-error" *ngIf="status == 'error'">
+    <div class="alert alert-danger" *ngIf="status == 'error'">
         Error al guardar el producto.
     </div>
 
-    <form #productForm="ngForm" (ngSubmit)="onGuardar()">
+    <form #productForm="ngForm" (ngSubmit)="onSave()">
         <div class="form-group">
             <label>Nombre</label>
             <input type="text" class="form-control" #name="ngModel" name="name" [(ngModel)]="product.name" placeholder="Ingrese el nombre" required>

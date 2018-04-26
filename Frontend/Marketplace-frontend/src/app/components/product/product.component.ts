@@ -29,8 +29,8 @@ export class ProductComponent implements OnInit {
         
     }
 
-    onGuardar(){
-        this._productService.guardar(this.product).subscribe(
+    onSave(){
+        this._productService.save(this.product).subscribe(
             response => {                
                 //console.log("RESPONSE: " + JSON.stringify(response));
                 if(response.code != 200){
@@ -39,7 +39,7 @@ export class ProductComponent implements OnInit {
                 }
                 else{
                     this.product = new Product(0, '', 0, 0);                                      
-                    this.status = 'success';
+                    this.status = 'success'; 
                 }
                 
             },

@@ -1,0 +1,21 @@
+<div class="col-lg-6">
+    <h1>{{ title }}</h1>
+    
+    <form class="col-lg-7" #loginForm="ngForm" (ngSubmit)="onLogin()">
+        <p>
+            <label>Email</label>
+            <input type="email" #email="ngModel" [(ngModel)]="user.email" name="email" class="form-control">
+            <span *ngIf="!email.valid && email.touched">
+                    Ingrese el email
+                </span>
+        </p>
+        <p>
+            <label>Password</label>
+            <input type="password" #pass="ngModel" [(ngModel)]="user.pass" name="pass" class="form-control" required>
+            <span *ngIf="!pass.valid && pass.touched">
+                Ingrese el password
+            </span>
+        </p>
+        <input type="submit" value="Login" class="btn btn-success" [disabled]="!loginForm.form.valid" />
+    </form>
+</div>

@@ -2,10 +2,10 @@ let dbConnection = require('../database/dbConnection');
 let express = require('express');
 let app = express();
 
-app.get('/shoopingcart', (req, res) => {
+app.get('/shoppingcart/:userId', (req, res) => {
     
     let userId = req.params.userId;
-    let query = "SELECT sc.userId, sc.productId, p.name, sc.quatity FROM shopping_cart sc ";
+    let query = "SELECT sc.userId, sc.productId, p.name, sc.quantity FROM shopping_cart sc ";
     query += " INNER JOIN product p ON (p.productId = sc.productId)";
     query += " WHERE sc.userId = ?"
 
@@ -24,19 +24,36 @@ app.get('/shoopingcart', (req, res) => {
 })
 
 app.post('/shoppingcart', (req, res) => {
-    let shoopingcart = req.body;
+    let shoppingcart = req.body;
 
-    if(shoppingCartValidated(shoopingcart)){
+    if(shoppingCartValidated(shoppingcart)){
 
-        dbConnection.query('INSERT INTO shopping_cart SET ?', shoopingcart, (err, result) => {
-            
-            if(err){
-                res.status(400).json({ok: false, message: "Error al insertar datos. ", err});
+        findProduct(shoppingcart.userId, shoppingcart.productId, (result, data) => {
+            if(result){
+                // UPDATE
+                console.log('UPDATE');
+                // PARA INCREMENTAR
+                if(shoppingcart.add)
+                    shoppingcart.quantity = parseInt(data.quantity) + parseInt(shoppingcart.quantity);
+
+                updateShoppingCart(shoppingcart, res);
             }
-            
-            res.status(200).json(result);            
-        });
-
+            else{
+                console.log('INSERT');
+                let key = "add";
+                delete shoppingcart[key];
+                console.log(JSON.stringify(shoppingcart));
+                dbConnection.query('INSERT INTO shopping_cart SET ?', shoppingcart, (err, result) => {
+                
+                    if(err){
+                        res.status(400).json({ok: false, message: "Error al insertar datos. ", err});
+                    }
+                    
+                    res.status(200).json({code: 200});            
+                });
+            }
+        })
+              
     }
     else{
         res.status(400).json({
@@ -47,26 +64,16 @@ app.post('/shoppingcart', (req, res) => {
 })
 
 app.put('/shoppingcart', (req, res) => {
-    let shoopingcart = req.body;
+    let shoppingcart = req.body;
 
-    if(shoppingCartValidated(shoopingcart)){
+    if(shoppingCartValidated(shoppingcart)){
 
-        let query = "UPDATE shopping_cart SET quantity = ? ";
-        query += "WHERE userId = ? AND productId = ?"
-
-        dbConnection.query(query, [shoopingcart.quantity, shoopingcart.userId, shoopingcart.productId], (err, result) => {
-            
-            if(err){
-                res.status(400).json({ok: false, message: "Error al modificar el dato. ", err});
-            }
-            
-            res.status(200).json(result);            
-        });
+        updateShoppingCart(shoppingcart, res);
 
     }
     else{
         res.status(400).json({
-            ok: false,
+            code: 400,
             message: _strMensaje
         })
     }
@@ -110,6 +117,40 @@ function shoppingCartValidated(pObShoppingCart){
     }    
     
     return true;
+}
+
+function findProduct(userId, productId, next){
+
+    dbConnection.query("SELECT * FROM shopping_cart WHERE userId = ? AND productId = ?", [userId, productId] , (err, result, fields) => {
+        if(err){
+            console.log('ERROR ' + err);
+            next(false);
+        }
+
+        if(result == undefined || result == ''){
+            console.log('NO EXISTE ' + result);
+            next(false);
+        }
+        else{
+            console.log('SI EXISTE ' + result);
+            next(true, result[0]);
+        }
+
+    });
+}
+
+function updateShoppingCart(shoopingcart, res){
+    let query = "UPDATE shopping_cart SET quantity = ? ";
+    query += "WHERE userId = ? AND productId = ?"
+
+    dbConnection.query(query, [shoopingcart.quantity, shoopingcart.userId, shoopingcart.productId], (err, result) => {
+        
+        if(err){
+            res.status(400).json({ok: false, message: "Error al modificar el dato. ", err});
+        }
+        
+        res.status(200).json({code: 200});            
+    });
 }
 
 module.exports = app;

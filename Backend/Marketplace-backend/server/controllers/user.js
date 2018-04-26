@@ -7,7 +7,8 @@ let app = express();
 app.post('/login', (req, res) => {
 
     let email = req.body.email;
-    let pass = bcrypt.hashSync(req.body.pass, 10);
+    // let pass = bcrypt.hashSync(req.body.pass, 10);
+    let pass = req.body.pass;
     console.log(pass);
 
     dbConnection.query("SELECT * FROM user WHERE email = ? AND pass = ?", [email, pass] , (err, result, fields) => {
@@ -25,7 +26,7 @@ app.post('/login', (req, res) => {
             });
         }
 
-        res.status(200).json(result[0]);
+        res.status(200).json({code:200, data: result[0]});
 
     });
 })
@@ -34,7 +35,8 @@ app.post('/user', (req, res) => {
 
     let user = {
         email: req.body.email,
-        pass: bcrypt.hashSync(req.body.pass, 10),
+        //pass: bcrypt.hashSync(req.body.pass, 10),
+        pass: req.body.pass,
         isSeller: req.body.isSeller
     };    
 

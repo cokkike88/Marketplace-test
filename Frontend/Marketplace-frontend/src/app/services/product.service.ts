@@ -12,7 +12,7 @@ export class ProductService{
         this.url = GLOBAL.url;
     }
 
-    guardar(pProduct): Observable<any>{
+    save(pProduct): Observable<any>{
 
         let params = JSON.stringify(pProduct);
         // let params = pProduct;
@@ -25,4 +25,9 @@ export class ProductService{
                 
 
     }
+
+    getAll(): Observable<any>{
+        return this._http.get(this.url+'product');
+    }
+
 }

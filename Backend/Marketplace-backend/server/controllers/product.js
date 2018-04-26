@@ -20,8 +20,11 @@ app.get('/product', (req, res) => {
             });            
         }
 
+        result.forEach(product => {
+            product.cost = parseFloat(product.cost +(product.cost * configuration.TAX_PERCENT/100) + (product.weight * configuration.SHIPPING_COST)).toFixed(2);
+        });
         //res.status(200).send(result);               
-        res.json(result);
+        res.json({code: 200, data:  result});
     });
 
 })
