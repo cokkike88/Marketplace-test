@@ -13,6 +13,7 @@ import { ProductService } from '../../services/product.service';
 export class ProductComponent implements OnInit {
     public title: string;
     public product: Product;
+    public status: string;
 
     constructor(
         private _route: ActivatedRoute,
@@ -25,10 +26,26 @@ export class ProductComponent implements OnInit {
 
     ngOnInit(){
         console.log('product.component cargador!!');
-        console.log(this._productService.guardar());
+        
     }
 
     onGuardar(){
-        console.log(this.product);        
+        this._productService.guardar(this.product).subscribe(
+            response => {                
+                //console.log("RESPONSE: " + JSON.stringify(response));
+                if(response.code != 200){
+                                                            
+                    this.status = 'error';
+                }
+                else{
+                    this.product = new Product(0, '', 0, 0);                                      
+                    this.status = 'success';
+                }
+                
+            },
+            error => {
+                console.log(<any>error);
+            }
+        );
     }
 }

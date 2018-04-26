@@ -1,6 +1,14 @@
 <div class="col-lg-6">
     <h1>{{title}}</h1>
     
+    <!-- Messages -->
+    <div class="alert alert-success" *ngIf="status == 'success'">
+        Se guardo el producto exitosamente.
+    </div>
+    <div class="alert alert-error" *ngIf="status == 'error'">
+        Error al guardar el producto.
+    </div>
+
     <form #productForm="ngForm" (ngSubmit)="onGuardar()">
         <div class="form-group">
             <label>Nombre</label>
