@@ -6,6 +6,7 @@ import { HomeComponent } from './components/home/home.component';
 import { ProductComponent } from './components/product/product.component';
 import { ProductsComponent } from './components/products/products.component';
 import { LoginComponent } from './components/login/login.component';
+import { ShoppingCartComponent } from './components/shoppingcart/shoppingcart.component';
 
 const appRoutes: Routes = [
     {path: '', component: HomeComponent},
@@ -13,7 +14,8 @@ const appRoutes: Routes = [
     {path: 'home', component: HomeComponent },
     {path: 'product', component: ProductComponent },
     {path: 'products', component: ProductsComponent },
-    {path: 'login', component: LoginComponent }
+    {path: 'login', component: LoginComponent },
+    {path: 'shoppingcart', component: ShoppingCartComponent }
 ];
 
 export const appRoutingProviders: any[] = [];

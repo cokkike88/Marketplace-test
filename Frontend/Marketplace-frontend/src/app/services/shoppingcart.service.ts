@@ -12,7 +12,7 @@ export class ShoppingCartService{
         this.url = GLOBAL.url;
     }
 
-    save(pProductId, add): Observable<any>{
+    save(pProductId, quantity, add): Observable<any>{
 
         let params; 
         
@@ -20,7 +20,7 @@ export class ShoppingCartService{
             params = {
                 productId: pProductId,
                 userId: localStorage.getItem('userid'),
-                quantity: 1,
+                quantity,
                 add: true
             };
         }
@@ -28,7 +28,7 @@ export class ShoppingCartService{
             params = {
                 productId: pProductId,
                 userId: localStorage.getItem('userid'),
-                quantity: 1                
+                quantity              
             }
         }
         
@@ -43,6 +43,18 @@ export class ShoppingCartService{
     getAll(): Observable<any>{
         let userid = localStorage.getItem('userid');
         return this._http.get(this.url + 'shoppingcart/' + userid);
+    }
+
+    delete(pProductId): Observable<any>{
+
+        let params = {
+            productId: pProductId,
+            userId: localStorage.getItem('userid')            
+        }
+                
+        //let headers = new HttpHeaders().set('Content-Type','application/json');
+        console.log('URL: ' + this.url+'shoppingcart');
+        return this._http.delete(this.url+'shoppingcart/' + params.userId + '/' + params.productId);                
     }
 
 }

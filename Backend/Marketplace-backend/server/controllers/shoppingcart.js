@@ -17,9 +17,8 @@ app.get('/shoppingcart/:userId', (req, res) => {
                 message: "Error al hacer la consulta. " + err
             });            
         }
-
-        //res.status(200).send(result);               
-        res.json(result);
+             
+        res.json({code: 200, data: result});
     });
 })
 
@@ -79,8 +78,11 @@ app.put('/shoppingcart', (req, res) => {
     }
 })
 
-app.delete('/shoppingcart', (req, res) => {
-    let shoopingcart = req.body;
+app.delete('/shoppingcart/:userId/:productId', (req, res) => {
+    let shoopingcart = {
+        userId: req.params.userId,
+        productId: req.params.productId
+    }
 
     let query = "DELETE FROM shopping_cart ";
     query += "WHERE userId = ? AND productId = ?"
@@ -91,7 +93,7 @@ app.delete('/shoppingcart', (req, res) => {
             res.status(400).json({ok: false, message: "Error al eliminar el dato. ", err});
         }
         
-        res.status(200).json(result);            
+        res.status(200).json({code: 200});            
     });
 
 

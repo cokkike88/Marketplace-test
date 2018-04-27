@@ -10,6 +10,7 @@ import { HomeComponent } from './components/home/home.component';
 import { ProductComponent } from './components/product/product.component';
 import { ProductsComponent } from './components/products/products.component';
 import { LoginComponent } from './components/login/login.component';
+import { ShoppingCartComponent } from './components/shoppingcart/shoppingcart.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { LoginComponent } from './components/login/login.component';
     ProductComponent,
     HomeComponent,
     ProductsComponent,
-    LoginComponent
+    LoginComponent,
+    ShoppingCartComponent
   ],
   imports: [
     BrowserModule,

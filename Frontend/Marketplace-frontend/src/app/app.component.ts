@@ -1,4 +1,5 @@
 import { Component, DoCheck, OnInit } from '@angular/core';
+import {Router, Params, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,10 @@ import { Component, DoCheck, OnInit } from '@angular/core';
 export class AppComponent implements DoCheck, OnInit {
   title = 'MARKETPLACE';
   email: string;
+
+  constructor(private _router: Router){
+    
+  }
 
   ngOnInit(){
     this.email = localStorage.getItem('useremail');
@@ -24,5 +29,7 @@ export class AppComponent implements DoCheck, OnInit {
     localStorage.removeItem('isseller');
     localStorage.clear();
     this.email = null;
+
+    this._router.navigate(['/home']);
   }
 }

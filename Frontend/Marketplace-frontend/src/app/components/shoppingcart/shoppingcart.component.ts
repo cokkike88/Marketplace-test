@@ -1,18 +1,18 @@
 import {Component, OnInit} from '@angular/core';
 import {Router, Params, ActivatedRoute } from '@angular/router';
-import { Product } from '../../models/product';
+import { ShoppingCart } from '../../models/shoppingcart';
 import { GLOBAL } from  '../../services/global';
 import { ProductService } from '../../services/product.service';
 import { ShoppingCartService } from '../../services/shoppingcart.service';
 
 @Component({
-    selector: 'product',
-    templateUrl: './products.component.html',
+    selector: 'shoppingcart',
+    templateUrl: './shoppingcart.component.html',
     providers: [ProductService, ShoppingCartService]
 })
-export class ProductsComponent implements OnInit {
+export class ShoppingCartComponent implements OnInit {
     public title: string;
-    public lstProducts: Product[];
+    public lstProducts: ShoppingCart[];
     public status: string;
     public isSeller: string;
 
@@ -22,7 +22,7 @@ export class ProductsComponent implements OnInit {
         private _productService: ProductService,
         private _shoppingcartService: ShoppingCartService
     ){
-        this.title = 'Productos';
+        this.title = 'Carrito';
         this.isSeller = localStorage.getItem('isseller');
     }
 
@@ -32,7 +32,7 @@ export class ProductsComponent implements OnInit {
     }
 
     getAll(){
-        this._productService.getAll().subscribe(
+        this._shoppingcartService.getAll().subscribe(
             response => {                
                 //console.log("RESPONSE: " + JSON.stringify(response));
                 if(response.code != 200){
@@ -51,8 +51,30 @@ export class ProductsComponent implements OnInit {
         );
     }
 
-    onAddShoppingCart(pProductId){
-        this._shoppingcartService.save(pProductId, 1, true).subscribe(
+    onDeleteShoppingCart(pProductId){
+        this._shoppingcartService.delete(pProductId).subscribe(
+            response => {                
+                //console.log("RESPONSE: " + JSON.stringify(response));
+                if(response.code != 200){
+                                                            
+                    this.status = 'error';
+                }
+                else{                                                          
+                    this.getAll();
+                }
+                
+            },
+            error => {
+                console.log(<any>error);
+            }
+        );
+    }  
+    
+    onUpdateShoppingCart(pProductId){        
+
+        let product = this.lstProducts.find(x => x.productId == pProductId);
+
+        this._shoppingcartService.save(pProductId, product.quantity, false).subscribe(
             response => {                
                 //console.log("RESPONSE: " + JSON.stringify(response));
                 if(response.code != 200){
@@ -68,24 +90,5 @@ export class ProductsComponent implements OnInit {
                 console.log(<any>error);
             }
         );
-    }  
-    
-    // onUpdateShoppingCart(pProductId){        
-    //     this._shoppingcartService.save(pProductId, false).subscribe(
-    //         response => {                
-    //             //console.log("RESPONSE: " + JSON.stringify(response));
-    //             if(response.code != 200){
-                                                            
-    //                 this.status = 'error';
-    //             }
-    //             else{                                                          
-    //                 this.status = 'success'; 
-    //             }
-                
-    //         },
-    //         error => {
-    //             console.log(<any>error);
-    //         }
-    //     );
-    // } 
+    } 
 }
