@@ -1,11 +1,12 @@
 let dbConnection = require('../database/dbConnection');
+let configuration = require('./configuration');
 let express = require('express');
 let app = express();
 
 app.get('/shoppingcart/:userId', (req, res) => {
     
     let userId = req.params.userId;
-    let query = "SELECT sc.userId, sc.productId, p.name, sc.quantity FROM shopping_cart sc ";
+    let query = "SELECT sc.userId, sc.productId, p.name, sc.quantity, p.cost, p.weight FROM shopping_cart sc ";
     query += " INNER JOIN product p ON (p.productId = sc.productId)";
     query += " WHERE sc.userId = ?"
 
@@ -17,6 +18,10 @@ app.get('/shoppingcart/:userId', (req, res) => {
                 message: "Error al hacer la consulta. " + err
             });            
         }
+
+        result.forEach(product => {
+            product.cost = parseFloat(product.cost +(product.cost * configuration.TAX_PERCENT/100) + (product.weight * configuration.SHIPPING_COST)).toFixed(2);
+        });
              
         res.json({code: 200, data: result});
     });

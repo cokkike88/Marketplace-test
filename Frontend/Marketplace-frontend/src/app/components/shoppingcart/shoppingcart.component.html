@@ -1,33 +1,81 @@
 <div class="col-lg-6">
-        <h1>{{title}}</h1>
-        <!-- Messages -->
-        <div class="alert alert-success" *ngIf="status == 'success'">
-            Se guardo el producto exitosamente.
-        </div>
-        <hr>
-        <a *ngIf="!isSeller" class="btn btn-lg btn-primary" [routerLink]="['/product']">Agregar</a>
-        <table class="table table-hover">
-            <thead class="thead-default">
-                <tr>
-                    <th>Nombre</th>
-                    <th>Cantidad</th>
-                    <th>Accion</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let product of lstProducts">
-                    <td>{{ product.name }}</td>
-                    <td>
-                        <input type="number" class="form-control" name="quantity_{{product.productId}}" 
-                            #quantity_{{productId}} [(ngModel)]="product.quantity" placeholder="Ingrese la cantidad" 
-                            required >                          
-                    </td>
-                    <td>
-                        <!-- <button class="btn btn-sm btn-primary" (click)="onUpdateShoppingCart(product.productId)">Actualizar</button>                                         -->
-                        <button class="btn btn-sm btn-danger" (click)="onDeleteShoppingCart(product.productId)">Eliminar</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <h1>{{title}}</h1>
+    <!-- Messages -->
+    <div class="alert alert-success" *ngIf="status == 'success'">
+        Se guardo el producto exitosamente.
+    </div>
+    <hr>
+    <a *ngIf="!isSeller" class="btn btn-lg btn-primary" [routerLink]="['/product']">Agregar</a>
+    <table class="table table-hover">
+        <thead class="thead-default">
+            <tr>
+                <th>Nombre</th>
+                <th>Cantidad</th>
+                <th>Total</th>
+                <th>Accion</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let product of lstProducts">
+                <td>{{ product.name }}</td>
+                <td>
+                    <input type="number" class="form-control" name="quantity_{{product.productId}}" 
+                        #quantity_{{productId}} [(ngModel)]="product.quantity" placeholder="Ingrese la cantidad" 
+                        (change)="totalDetail(product.productId)" required >                          
+                </td>
+                <td>{{ product.total }}</td>
+                <td>
+                    <!-- <button class="btn btn-sm btn-primary" (click)="onUpdateShoppingCart(product.productId)">Actualizar</button>                                         -->
+                    <button class="btn btn-sm btn-danger" (click)="onDeleteShoppingCart(product.productId)">Eliminar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    TOTAL: {{ total }}
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Pagar
+    </button>
     
-    </div> 
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Pago</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                        <label for="inputEmail4">Nombre</label>
+                        <input type="text" class="form-control" id="name" placeholder="Nombre">
+                        </div>
+                        <div class="form-group col-md-6">
+                        <label for="inputPassword4">No. tarjeta</label>
+                        <input type="text" class="form-control" id="notarjeta" placeholder="No. tarjeta">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                        <label for="inputEmail4">Codigo seguridad</label>
+                        <input type="number" class="form-control" id="codgoseguridad" placeholder="Codigo de seguirdad">
+                        </div>                            
+                    </div>
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <button type="button" (click)="onSaveInvoice()" class="btn btn-primary">Realizar pago</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</div> 
